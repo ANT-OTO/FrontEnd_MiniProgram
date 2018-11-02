@@ -19,12 +19,45 @@ Page({
   },
   getAddressList (){
     let that = this;
-    util.request(api.AddressList).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          addressList: res.data
-        });
-      }
+    util.request(api.Customer).then(function (res) {
+      console.log(res)
+      var testitem = {
+
+        "CustomerId": 1,
+        "ContactName": "sample string 1",
+        "ContactLastName": "sample string 2",
+        "ContactPhoneNumber": "sample string 3",
+        "ContactPhoneCountryId": 1,
+        "Address1": "sample string 4",
+        "Address2": "sample string 5",
+        "City": "sample string 6",
+        "State": "sample string 7",
+        "Zip": "sample string 8",
+        "CountryId": 1,
+        "IDNumber": "sample string 9",
+        "DefaultShipping": true,
+      };
+      res.AddressList.push(testitem)
+      testitem = {
+
+        "CustomerId": 2,
+        "ContactName": "sample string 1",
+        "ContactLastName": "sample string 2",
+        "ContactPhoneNumber": "sample string 3",
+        "ContactPhoneCountryId": 1,
+        "Address1": "sample string 4",
+        "Address2": "sample string 5",
+        "City": "sample string 6",
+        "State": "sample string 7",
+        "Zip": "sample string 8",
+        "CountryId": 1,
+        "IDNumber": "sample string 9",
+        "DefaultShipping": true,
+      },
+      res.AddressList.push(testitem)
+      that.setData({
+        addressList: res.AddressList
+      });
     });
   },
   addressAddOrUpdate (event) {

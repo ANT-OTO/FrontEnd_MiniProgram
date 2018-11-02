@@ -3,9 +3,18 @@ const ApiRootUrl = 'http://www.otoant.com/api/';
 module.exports = {
   CustomerThirdPartyRegister: ApiRootUrl + 'Customer/CustomerThirdPartyRegister/test',
   CustomerLogin: ApiRootUrl + 'Customer/Login',
-  // IndexUrl: ApiRootUrl + 'index/index', //首页数据接口
-  IndexUrl: ApiRootUrl + 'product/brandlist/1', //首页数据接口
+  CustomerAddressCreateUpdate: ApiRootUrl + 'Customer/CustomerAddressCreateUpdate', //get product
+  FileUpload: ApiRootUrl + 'FileUpload/UploadFile?FileExt=', //uploade file
+  Customer: ApiRootUrl + 'Customer/Customer', //get customer
+  CustomerOnSaleItemSearch: ApiRootUrl + 'Customer/CustomerOnSaleItemSearch', //get products
+  CustomerOnSaleItemGet: ApiRootUrl + 'Customer/CustomerOnSaleItemGet?ItemId=', //get product
 
+  
+
+  
+
+
+  IndexUrl: ApiRootUrl + 'index/index', //首页数据接口
   CatalogList: ApiRootUrl + 'catalog/index',  //分类目录全部分类数据接口
   CatalogCurrent: ApiRootUrl + 'catalog/current',  //分类目录当前分类数据接口
 

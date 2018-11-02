@@ -3,6 +3,7 @@ var api = require('../../../config/api.js');
 var app = getApp();
 Page({
   data: {
+    idLists:[],
     address: {
       ContactName: "",
       ContactLastName: "",
@@ -337,42 +338,35 @@ Page({
   },
   saveAddress(){
     console.log(this.data.address)
-    let address = this.data.address;
+     let address = this.data.address;
+    address.ContactPhoneCountryId = 1;
+    address.CountryId = 1;
 
-    if (address.name == '') {
-      util.showErrorToast('请输入姓名');
+    // if (address.name == '') {
+    //   util.showErrorToast('请输入姓名');
 
-      return false;
-    }
+    //   return false;
+    // }
 
-    if (address.mobile == '') {
-      util.showErrorToast('请输入手机号码');
-      return false;
-    }
+    // if (address.mobile == '') {
+    //   util.showErrorToast('请输入手机号码');
+    //   return false;
+    // }
 
 
-    if (address.district_id == 0) {
-      util.showErrorToast('请输入省市区');
-      return false;
-    }
+    // if (address.district_id == 0) {
+    //   util.showErrorToast('请输入省市区');
+    //   return false;
+    // }
 
-    if (address.address == '') {
-      util.showErrorToast('请输入详细地址');
-      return false;
-    }
+    // if (address.address == '') {
+    //   util.showErrorToast('请输入详细地址');
+    //   return false;
+    // }
 
 
     let that = this;
-    util.request(api.AddressSave, { 
-      id: address.id,
-      name: address.name,
-      mobile: address.mobile,
-      province_id: address.province_id,
-      city_id: address.city_id,
-      district_id: address.district_id,
-      address: address.address,
-      is_default: address.is_default,
-    }, 'POST').then(function (res) {
+    util.request(api.CustomerAddressCreateUpdate, address, 'POST').then(function (res) {
       if (res.errno === 0) {
         wx.navigateTo({
           url: '/pages/ucenter/address/address',
@@ -412,15 +406,63 @@ Page({
   },
   chooseWxImage: function (type) {
     var that = this;
+    let idLists = this.data.idLists;
     wx.chooseImage({
       sizeType: ['original', 'compressed'],
       sourceType: [type],
       success: function (res) {
+        var tempFilePaths = res.tempFilePaths;
         console.log(res);
-        that.setData({
-          tempFilePaths: res.tempFilePaths[0],
+        wx.showToast({
+          title: '正在上传...',
+          icon: 'loading',
+          mask: true,
+          duration: 10000
         })
+        var uploadImgCount = 0;
+        for (var i = 0, h = tempFilePaths.length; i < h; i++) {
+          wx.uploadFile({
+            url: api.FileUpload+"img",
+            filePath: tempFilePaths[i],
+            name: 'uploadfile_ant',
+            // formData: {
+            //   'imgIndex': i
+            // },
+            header: {
+              "Content-Type": "multipart/form-data",
+              'ANTToken': wx.getStorageSync('token')
+            },
+            success: function (res) {
+              console.log(res);
+              uploadImgCount++;
+              if(res.data){
+                idLists.push(res.data);
+                that.setData({
+                  idLists
+                })
+
+              }
+
+              //如果是最后一张,则隐藏等待中
+              if (uploadImgCount == tempFilePaths.length) {
+                wx.hideToast();
+              }
+            },
+            fail: function (res) {
+              wx.hideToast();
+              wx.showModal({
+                title: '错误提示',
+                content: '上传图片失败',
+                showCancel: false,
+                success: function (res) { }
+              })
+            }
+          });
+        }        
       }
-    })
+    });
+
+
+    
   }
 })

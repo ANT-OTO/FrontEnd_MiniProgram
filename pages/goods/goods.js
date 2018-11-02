@@ -26,7 +26,9 @@ Page({
   },
   getGoodsInfo: function () {
     let that = this;
-    util.request(api.GoodsDetail, { id: that.data.id }).then(function (res) {
+    util.request(api.CustomerOnSaleItemGet +'1238', {}, 'POST').then(function (res) {
+      console.log("###############################product item get")
+      console.log(res);
       if (res.errno === 0) {
         that.setData({
           goods: res.data.info,
