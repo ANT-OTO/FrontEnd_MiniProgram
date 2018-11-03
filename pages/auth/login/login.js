@@ -1,4 +1,5 @@
 var api = require('../../../config/api.js');
+var user = require('../../../services/user.js');
 var app = getApp();
 Page({
   data: {
@@ -102,5 +103,28 @@ Page({
         });
         break;
     }
+  },
+  getUserInfoFun: function(e){
+    user.loginByWeixin().then(res => {
+      // this.setData({
+      //   userInfo: res.data.userInfo
+      // });
+      console.log(res);
+      // this.globalData.userInfo = res.data.userInfo;
+      // this.globalData.token = res.data.token;
+      wx.switchTab({
+        url: '/pages/products/index',
+        success: function (res) {
+        },
+        fail: function (res) {
+          console.log(res)
+        }
+      })
+
+    }).catch((err) => {
+
+      console.log(err)
+
+    });
   }
 })

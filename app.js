@@ -9,8 +9,17 @@ App({
       console.log('app login')
       this.globalData.userInfo = wx.getStorageSync('userInfo');
       this.globalData.token = wx.getStorageSync('token');
-    }).catch(() => {
+      wx.switchTab({
+        url: '/pages/products/index',
+        success:function(res){
+        },
+        fail:function(res){
+          console.log(res)
+        }
+      })
+    }).catch((error) => {
       //1.ask permison to login or register
+      console.log(error)
       user.loginByWeixin().then(res => {
         // this.setData({
         //   userInfo: res.data.userInfo
@@ -19,6 +28,7 @@ App({
         this.globalData.token = res.data.token;
       }).catch((err) => {
         console.log(err)
+        
       });
 
     });

@@ -57,7 +57,7 @@ Page({
       keyword: e.detail.value,
       searchStatus: false
     });
-    this.getHelpKeyword();
+    //this.getHelpKeyword();
   },
   getHelpKeyword: function () {
     let that = this;
@@ -76,7 +76,7 @@ Page({
     });
 
     if (this.data.keyword) {
-      this.getHelpKeyword();
+      //this.getHelpKeyword();
     }
   },
   clearHistory: function () {
@@ -91,15 +91,16 @@ Page({
   },
   getGoodsList: function () {
     let that = this;
-    util.request(api.CustomerOnSaleItemSearch, { keyword: that.data.keyword, page: that.data.page, size: that.data.size, sort: that.data.currentSortType, order: that.data.currentSortOrder, categoryId: that.data.categoryId }, 'POST').then(function (res) {
+    util.request(api.CustomerOnSaleItemSearch, { ProductName: that.data.keyword, page: that.data.page, PageSize: that.data.size}, 'POST').then(function (res) {
+      console.log(res)
 
       that.setData({
         searchStatus: true,
         categoryFilter: false,
-        //goodsList: ['', ''],
+        goodsList: res.records,
         // filterCategory: res.data.filterCategory,
-        // page: res.data.currentPage,
-        // size: res.data.numsPerPage
+        page: res.CurrentPage
+        //size: res.data.numsPerPage
       });
 
       //重新获取关键词

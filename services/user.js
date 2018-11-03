@@ -46,7 +46,12 @@ function loginByWeixin() {
         wx.setStorageSync('userInfo', userInfo);
         wx.setStorageSync('token', res.data.Token);
         console.log("######################### login dd ")
+        res.data.userInfo = userInfo;
+        resolve(res);
 
+
+      }else{
+        reject();
       }
     }).catch((err) => {
       reject(err);

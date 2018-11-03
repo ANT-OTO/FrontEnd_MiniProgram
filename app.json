@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/auth/login/login",
     "pages/products/index",
     "pages/index/index",
     "pages/catalog/catalog",
@@ -14,7 +15,6 @@
     "pages/ucenter/feedback/feedback",
     "pages/ucenter/coupon/coupon",
     "pages/ucenter/collect/collect",
-    "pages/auth/login/login",
     "pages/auth/register/register",
     "pages/auth/reset/reset",
     "pages/pay/pay",
