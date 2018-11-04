@@ -16,10 +16,12 @@ Page({
     defaultKeyword: {},
     hotKeyword: [],
     page: 1,
-    size: 20,
+    size: 10,
     currentSortType: 'id',
     currentSortOrder: 'desc',
-    categoryId: 0
+    categoryId: 0,
+    isHideLoadMore: true
+
   },
   //事件处理函数
   closeSearch: function () {
@@ -89,9 +91,16 @@ Page({
         console.log('清除成功');
       });
   },
+  searchClick: function(){
+    this.getGoodsList();
+
+  },
+
   getGoodsList: function () {
     let that = this;
-    util.request(api.CustomerOnSaleItemSearch, { ProductName: that.data.keyword, page: that.data.page, PageSize: that.data.size}, 'POST').then(function (res) {
+    console.log(that.data.keyword);
+
+    util.request(api.CustomerOnSaleItemSearch, { ProductName: that.data.keyword, Page: 1, PageSize: that.data.size}, 'POST').then(function (res) {
       console.log(res)
 
       that.setData({
@@ -99,8 +108,9 @@ Page({
         categoryFilter: false,
         goodsList: res.records,
         // filterCategory: res.data.filterCategory,
-        page: res.CurrentPage
+        page: res.CurrentPage,
         //size: res.data.numsPerPage
+        //size:20
       });
 
       //重新获取关键词
@@ -111,6 +121,45 @@ Page({
 
     this.getSearchResult(event.target.dataset.keyword);
 
+  },
+  onReachBottom: function () {
+    let that = this;
+
+    if (that.data.isHideLoadMore){
+      console.log('加载更多')
+      this.setData({
+        isHideLoadMore: false
+      });
+      util.request(api.CustomerOnSaleItemSearch, { ProductName: that.data.keyword, Page: that.data.page + 1, PageSize: that.data.size }, 'POST').then(function (res) {
+        console.log(res)
+        if (res.CurrentPage == that.data.page + 1) {
+          var newGoodList = that.data.goodsList.concat(res.records);
+          that.setData({
+            searchStatus: true,
+            categoryFilter: false,
+            goodsList: newGoodList,
+            // filterCategory: res.data.filterCategory,
+            page: res.CurrentPage,
+            //size: res.data.numsPerPage
+            //size: 20,
+            isHideLoadMore: true
+
+          });
+
+        }else{
+          that.setData({
+          
+            isHideLoadMore: true
+
+          });
+
+        }
+
+      });
+
+    }
+   
+   
   },
   getSearchResult(keyword) {
     this.setData({

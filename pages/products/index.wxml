@@ -1,4 +1,4 @@
-<scroll-view class="container" style="height: 100%;">
+<scroll-view bindscrolltolower="onReachBottom" class="container" style="height: 100%;">
   <view class="search-header">
     <view class="input-box">
       <image class="icon" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"></image>
@@ -6,6 +6,8 @@
       <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"></image>
     </view>
     <view class="right" bindtap="closeSearch">取消</view>
+    <view class="right" bindtap="searchClick">搜索</view>
+
   </view>
   <!-- <view class="no-search" wx:if="{{ !searchStatus}}">
       <view class="serach-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
@@ -57,6 +59,10 @@
       </navigator>
     </view>
   </view>
+  </view>
+  <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
   </view>
 
   <view class="search-result-empty" wx:if="{{!goodsList.length && searchStatus}}">

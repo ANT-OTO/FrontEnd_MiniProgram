@@ -4,10 +4,20 @@ module.exports = {
   CustomerThirdPartyRegister: ApiRootUrl + 'Customer/CustomerThirdPartyRegister/test',
   CustomerLogin: ApiRootUrl + 'Customer/Login',
   CustomerAddressCreateUpdate: ApiRootUrl + 'Customer/CustomerAddressCreateUpdate', //get product
-  FileUpload: ApiRootUrl + 'FileUpload/UploadFile?FileExt=', //uploade file
+  FileUpload: ApiRootUrl + 'FileUpload/UploadFileCustomer?FileExt=', //uploade file
   Customer: ApiRootUrl + 'Customer/Customer', //get customer
   CustomerOnSaleItemSearch: ApiRootUrl + 'Customer/CustomerOnSaleItemSearch', //get products
-  CustomerOnSaleItemGet: ApiRootUrl + 'Customer/CustomerOnSaleItemGet?ItemId=', //get product
+  CustomerOnSaleItemGet: ApiRootUrl + 'Customer/CustomerOnSaleItemGet?ItemId=',
+  CustomerShoppingCartUpdateAdd: ApiRootUrl + 'Customer/CustomerShoppingCartUpdateAdd',
+  CustomerShoppingCartGet: ApiRootUrl + 'Customer/CustomerShoppingCartGet',
+  CustomerShoppingCartUpdateAdd: ApiRootUrl + 'Customer/CustomerShoppingCartUpdateAdd',
+
+  
+  
+
+  
+  
+   //get product
 
   
 

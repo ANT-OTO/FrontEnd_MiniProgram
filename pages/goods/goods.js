@@ -26,23 +26,31 @@ Page({
   },
   getGoodsInfo: function () {
     let that = this;
-    util.request(api.CustomerOnSaleItemGet +'1238', {}, 'POST').then(function (res) {
+    util.request(api.CustomerOnSaleItemGet + that.data.id, {}, 'POST').then(function (res) {
       console.log("###############################product item get")
       console.log(res);
-      if (res.errno === 0) {
+      if (res) {
+        if(res.MainImage){
+          res.ImageList.push(res.MainImage)
+        }
+        for (var item in res.ImageList) {
+          res.ImageList[item].FileLink = res.ImageList[item].FileLink.replace('https', 'http');
+        }
+        console.log(res.ImageList);
+
         that.setData({
-          goods: res.data.info,
-          gallery: res.data.gallery,
-          attribute: res.data.attribute,
-          issueList: res.data.issue,
-          comment: res.data.comment,
-          brand: res.data.brand,
-          specificationList: res.data.specificationList,
-          productList: res.data.productList,
-          userHasCollect: res.data.userHasCollect
+          goods: res,
+          gallery: res.ImageList//,
+          // attribute: res.attribute,
+          // issueList: res.issue,
+          // comment: res.comment,
+          // brand: res.brand,
+          // specificationList: res.specificationList,
+          // productList: res.productList,
+          // userHasCollect: res.userHasCollect
         });
 
-        if (res.data.userHasCollect == 1) {
+        if (res.userHasCollect == 1) {
           that.setData({
             'collectBackImage': that.data.hasCollectImage
           });
@@ -52,9 +60,9 @@ Page({
           });
         }
 
-        WxParse.wxParse('goodsDetail', 'html', res.data.info.goods_desc, that);
+        //WxParse.wxParse('goodsDetail', 'html', res.data.info.goods_desc, that);
 
-        that.getGoodsRelated();
+        //that.getGoodsRelated();
       }
     });
 
@@ -274,39 +282,41 @@ Page({
       }
 
       //根据选中的规格，判断是否有对应的sku信息
-      let checkedProduct = this.getCheckedProductItem(this.getCheckedSpecKey());
-      if (!checkedProduct || checkedProduct.length <= 0) {
-        //找不到对应的product信息，提示没有库存
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '库存不足',
-          mask: true
-        });
-        return false;
-      }
+      // let checkedProduct = this.getCheckedProductItem(this.getCheckedSpecKey());
+      // if (!checkedProduct || checkedProduct.length <= 0) {
+      //   //找不到对应的product信息，提示没有库存
+      //   wx.showToast({
+      //     image: '/static/images/icon_error.png',
+      //     title: '库存不足',
+      //     mask: true
+      //   });
+      //   return false;
+      // }
 
       //验证库存
-      if (checkedProduct.goods_number < this.data.number) {
-        //找不到对应的product信息，提示没有库存
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '库存不足',
-          mask: true
-        });
-        return false;
-      }
+      // if (checkedProduct.goods_number < this.data.number) {
+      //   //找不到对应的product信息，提示没有库存
+      //   wx.showToast({
+      //     image: '/static/images/icon_error.png',
+      //     title: '库存不足',
+      //     mask: true
+      //   });
+      //   return false;
+      // }
 
       //添加到购物车
-      util.request(api.CartAdd, { goodsId: this.data.goods.id, number: this.data.number, productId: checkedProduct[0].id }, "POST")
+     
+      let _tmpNumber = this.data.number
+      util.request(api.CustomerShoppingCartUpdateAdd, { ItemId: this.data.goods.ItemId, Quantity: _tmpNumber }, "POST")
         .then(function (res) {
           let _res = res;
-          if (_res.errno == 0) {
+          if (_res) {
             wx.showToast({
               title: '添加成功'
             });
             that.setData({
               openAttr: !that.data.openAttr,
-              cartGoodsCount: _res.data.cartTotal.goodsCount
+              cartGoodsCount: _tmpNumber
             });
           } else {
             wx.showToast({
