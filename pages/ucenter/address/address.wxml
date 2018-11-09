@@ -1,6 +1,6 @@
 <view class="container">
     <view class="address-list" wx:if="{{ addressList.length > 0 }}">
-        <view class="item" wx:for="{{addressList}}" wx:key="{{item.CustomerAddressId}}" bindtap="addressAddOrUpdate" data-address-id="{{item.CustomerAddressId}}">
+        <view class="item" wx:for="{{addressList}}" wx:key="{{item.CustomerAddressId}}" bindtap="addressAddOrUpdate" wx:index="{{index}}" data-address-id="{{item.CustomerAddressId}}"  data-index="{{index}}">
             <view class="l">
                 <view class="name">{{item.ContactName}}</view>
                 <view class="default" wx:if="{{item.DefaultShipping}}">默认</view>

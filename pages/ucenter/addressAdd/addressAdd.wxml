@@ -7,7 +7,7 @@
             <input class="input" bindinput="bindinputContactLastName" placeholder="姓" value="{{address.ContactLastName}}"/>
         </view>
         <view class="form-item">
-            <input class="input" bindinput="bindinputContactContactPhoneNumber" placeholder="手机号码" value="{{address.ContactPhoneNumber}}"/>
+            <input class="input" bindinput="bindinputContactPhoneNumber" placeholder="手机号码" value="{{address.ContactPhoneNumber}}"/>
         </view>
         <view class="form-item">
             <input class="input" bindinput="bindinputAddress1" placeholder="地址1" value="{{address.Address1}}"/>

@@ -1,25 +1,32 @@
 <view class="container">
     <view class="orders">
-        <navigator url="../orderDetail/orderDetail?id={{item.id}}" class="order" wx:for="{{orderList}}" wx:key="{{item.id}}">
+        <navigator url="../orderDetail/orderDetail?id={{item.Customer_OrderId}}" class="order" wx:for="{{orderList}}" wx:key="{{item.Customer_OrderId}}">
             <view class="h">
-                <view class="l">订单编号：{{item.order_sn}}</view>
+                <view class="l">订单编号：{{item.CustomerOrderCode}}</view>
                 <view class="r">{{item.order_status_text}}</view>
             </view>
-            <view class="goods" wx:for="{{item.goodsList}}" wx:key="{{gitem.id}}" wx:for-item="gitem">
+            <view class="goods" wx:for="{{item.ItemList}}" wx:key="{{gitem.ItemId}}" wx:for-item="gitem">
                 <view class="img">
-                    <image src="{{gitem.list_pic_url}}"></image>
+                    <image src="{{gitem.Item.MainImage.FileLink}}"></image>
                 </view>
                 <view class="info">
-                    <text class="name">{{gitem.goods_name}}</text>
-                    <text class="number">共{{gitem.number}}件商品</text>
+                    <text class="name">{{gitem.Item.ItemTitle}}</text>
+                    <text class="number">共{{gitem.Quantity}}件商品</text>
                 </view>
                 <view class="status"></view>
             </view>
             <view class="b">
-                <view class="l">实付：￥{{item.actual_price}}</view>
-                <view class="r">
+              <view class="l">下单时间：{{item.CreateDate}}</view>
+
+            </view>
+
+
+            <view class="b">
+                <view class="l">合计：￥{{item.TotalAmount}}</view>
+
+                <!-- <view class="r">
                     <button class="btn" data-order-index="{{index}}" catchtap="payOrder" wx:if="{{item.handleOption.pay}}">去付款</button>
-                </view>
+                </view> -->
             </view>
         </navigator>
     </view>

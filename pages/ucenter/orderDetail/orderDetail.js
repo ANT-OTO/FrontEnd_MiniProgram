@@ -17,9 +17,10 @@ Page({
   },
   getOrderDetail() {
     let that = this;
-    util.request(api.OrderDetail, {
-      orderId: that.data.orderId
-    }).then(function (res) {
+    util.request(api.CustomerOrderGet + that.data.orderId, {}, 'POST').then(function (res) {
+      that.setData({
+        orderInfo: res
+      });
       if (res.errno === 0) {
         console.log(res.data);
         that.setData({

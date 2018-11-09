@@ -12,6 +12,7 @@ Page({
       "checkedGoodsCount": 0,
       "checkedGoodsAmount": 0.00
     },
+    CustomerId: 0,
     isEditCart: false,
     checkedAllStatus: true,
     editCartList: []
@@ -41,19 +42,39 @@ Page({
     let that = this;
     util.request(api.CustomerShoppingCartGet, {}, 'POST').then(function (res) {
       console.log(res);
-      that.setData({
-        cartGoods: res.ItemList,
-        cartTotal: res.cartTotal
-      });
+      if(res){
+        that.setData({
+          CustomerId: res.CustomerId
+        });
+      }
+      if (res.ItemList){
+        that.setData({
+          cartGoods: res.ItemList,
+          cartTotal: res.cartTotal
+        });
+      }else{
+        that.setData({
+          cartGoods: [],
+          cartTotal: res.cartTotal
+        });
+      }
+      var tempCartTotal =
+      {
+        "goodsCount": res.Goods_Count,
+        "goodsAmount": res.Goods_Amount,
+        "checkedGoodsCount": 0,
+        "checkedGoodsAmount": 0.00
+      };
       
-
       that.setData({
-        checkedAllStatus: that.isCheckedAll()
+        checkedAllStatus: that.isCheckedAll(),
+        cartTotal: tempCartTotal
       });
     });
   },
   isCheckedAll: function () {
     //判断购物车商品已全选
+    return;
     return this.data.cartGoods.every(function (element, index, array) {
       if (element.checked == true) {
         return true;
@@ -71,12 +92,19 @@ Page({
         if (res.errno === 0) {
           console.log(res.data);
           that.setData({
-            cartGoods: res.data.cartList,
-            cartTotal: res.data.cartTotal
+            cartGoods: res.data.cartList
           });
         }
+        var tempCartTotal =
+        {
+          "goodsCount": res.Goods_Count,
+          "goodsAmount": res.Goods_Amount,
+          "checkedGoodsCount": 0,
+          "checkedGoodsAmount": 0.00
+        };
 
         that.setData({
+          cartTotal: tempCartTotal,
           checkedAllStatus: that.isCheckedAll()
         });
       });
@@ -173,11 +201,30 @@ Page({
       Quantity: Quantity,
       CustomerShoppingCartId: CustomerShoppingCartId
     }, 'POST').then(function (res) {
-      if (res.errno === 0) {
+      if (res) {
         console.log(res.data);
+        if (res.ItemList) {
+          that.setData({
+            cartGoods: res.ItemList,
+            cartTotal: res.cartTotal
+          });
+        } else {
+          that.setData({
+            cartGoods: [],
+            cartTotal: res.cartTotal
+          });
+        }
+
+        var tempCartTotal =
+        {
+          "goodsCount": res.Goods_Count,
+          "goodsAmount": res.Goods_Amount,
+          "checkedGoodsCount": 0,
+          "checkedGoodsAmount": 0.00
+        };
         that.setData({
-          //cartGoods: res.data.cartList,
-          //cartTotal: res.data.cartTotal
+          cartTotal: tempCartTotal,
+          checkedAllStatus: that.isCheckedAll()
         });
       }
 
@@ -191,8 +238,8 @@ Page({
 
     let itemIndex = event.target.dataset.itemIndex;
     let cartItem = this.data.cartGoods[itemIndex];
-    let number = (cartItem.number - 1 > 1) ? cartItem.number - 1 : 1;
-    cartItem.number = number;
+    let number = (cartItem.Quantity - 1 > 0) ? cartItem.Quantity - 1 : 0;
+    cartItem.Quantity = number;
     this.setData({
       cartGoods: this.data.cartGoods
     });
@@ -201,7 +248,7 @@ Page({
   addNumber: function (event) {
     let itemIndex = event.target.dataset.itemIndex;
     let cartItem = this.data.cartGoods[itemIndex];
-    let number = cartItem.number + 1;
+    let number = cartItem.Quantity + 1;
     cartItem.number = number;
     this.setData({
       cartGoods: this.data.cartGoods
@@ -212,22 +259,74 @@ Page({
     //获取已选择的商品
     let that = this;
 
-    var checkedGoods = this.data.cartGoods.filter(function (element, index, array) {
-      if (element.checked == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    // var checkedGoods = this.data.cartGoods.filter(function (element, index, array) {
+    //   if (element.checked == true) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
 
-    if (checkedGoods.length <= 0) {
-      return false;
-    }
+    // if (checkedGoods.length <= 0) {
+    //   return false;
+    // }
 
 
     wx.navigateTo({
       url: '../shopping/checkout/checkout'
     })
+
+    
+  },
+  directPlaceOrder: function () {
+    let that = this;
+    console.log()
+
+    util.request(api.CustomerOrderCreateFromShoppingCart, { CustomerAddressId:0}, 'POST').then(function (res) {
+      if (res) {
+        console.log(res.data);
+        
+      }
+    });
+
+  },
+  clearAll: function(){
+    let that = this;
+    console.log()
+
+    util.request(api.CustomerShoppingCartClear, {}, 'POST').then(function (res) {
+      if (res) {
+        console.log(res.data);
+        if (res.ItemList) {
+          that.setData({
+            cartGoods: res.ItemList,
+            cartTotal: res.cartTotal
+          });
+        } else {
+          that.setData({
+            cartGoods: [],
+            cartTotal: res.cartTotal
+          });
+        }
+
+        var tempCartTotal =
+          {
+            "goodsCount": res.Goods_Count,
+            "goodsAmount": res.Goods_Amount,
+            "checkedGoodsCount": 0,
+            "checkedGoodsAmount": 0.00
+          };
+        that.setData({
+          cartTotal: tempCartTotal,
+          checkedAllStatus: that.isCheckedAll()
+        });
+      }
+
+      that.setData({
+        checkedAllStatus: that.isCheckedAll()
+      });
+    });
+
   },
   deleteCart: function () {
     //获取已选择的商品

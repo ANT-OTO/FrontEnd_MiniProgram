@@ -1,4 +1,4 @@
-const ApiRootUrl = 'http://www.otoant.com/api/';
+const ApiRootUrl = 'https://www.ant-oto.com/api/';
 
 module.exports = {
   CustomerThirdPartyRegister: ApiRootUrl + 'Customer/CustomerThirdPartyRegister/test',
@@ -11,6 +11,13 @@ module.exports = {
   CustomerShoppingCartUpdateAdd: ApiRootUrl + 'Customer/CustomerShoppingCartUpdateAdd',
   CustomerShoppingCartGet: ApiRootUrl + 'Customer/CustomerShoppingCartGet',
   CustomerShoppingCartUpdateAdd: ApiRootUrl + 'Customer/CustomerShoppingCartUpdateAdd',
+  CustomerShoppingCartClear: ApiRootUrl + 'Customer/CustomerShoppingCartClear',
+  CustomerOrderCreateFromShoppingCart: ApiRootUrl + 'Customer/CustomerOrderCreateFromShoppingCart',
+  CustomerOrderSearch: ApiRootUrl + 'Customer/CustomerOrderSearch',
+  CustomerOrderGet: ApiRootUrl + 'Customer/CustomerOrderGet?Customer_OrderId=',
+
+  
+  
 
   
   

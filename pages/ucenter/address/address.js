@@ -9,52 +9,21 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     this.getAddressList();
+
   },
   onReady: function () {
     // 页面渲染完成
   },
   onShow: function () {
     // 页面显示
+    this.getAddressList();
 
   },
   getAddressList (){
     let that = this;
     util.request(api.Customer).then(function (res) {
       console.log(res)
-      var testitem = {
-
-        "CustomerId": 1,
-        "ContactName": "sample string 1",
-        "ContactLastName": "sample string 2",
-        "ContactPhoneNumber": "sample string 3",
-        "ContactPhoneCountryId": 1,
-        "Address1": "sample string 4",
-        "Address2": "sample string 5",
-        "City": "sample string 6",
-        "State": "sample string 7",
-        "Zip": "sample string 8",
-        "CountryId": 1,
-        "IDNumber": "sample string 9",
-        "DefaultShipping": true,
-      };
-      res.AddressList.push(testitem)
-      testitem = {
-
-        "CustomerId": 2,
-        "ContactName": "sample string 1",
-        "ContactLastName": "sample string 2",
-        "ContactPhoneNumber": "sample string 3",
-        "ContactPhoneCountryId": 1,
-        "Address1": "sample string 4",
-        "Address2": "sample string 5",
-        "City": "sample string 6",
-        "State": "sample string 7",
-        "Zip": "sample string 8",
-        "CountryId": 1,
-        "IDNumber": "sample string 9",
-        "DefaultShipping": true,
-      },
-      res.AddressList.push(testitem)
+     
       that.setData({
         addressList: res.AddressList
       });
@@ -62,8 +31,11 @@ Page({
   },
   addressAddOrUpdate (event) {
     console.log(event)
+    var address = JSON.stringify(this.data.addressList[event.currentTarget.dataset.index])
+   
+
     wx.navigateTo({
-      url: '/pages/ucenter/addressAdd/addressAdd?id=' + event.currentTarget.dataset.addressId
+      url: '/pages/ucenter/addressAdd/addressAdd?address=' + address
     })
   },
   deleteAddress(event){

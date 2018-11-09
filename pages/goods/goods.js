@@ -33,9 +33,9 @@ Page({
         if(res.MainImage){
           res.ImageList.push(res.MainImage)
         }
-        for (var item in res.ImageList) {
-          res.ImageList[item].FileLink = res.ImageList[item].FileLink.replace('https', 'http');
-        }
+        // for (var item in res.ImageList) {
+        //   res.ImageList[item].FileLink = res.ImageList[item].FileLink.replace('https', 'http');
+        // }
         console.log(res.ImageList);
 
         that.setData({

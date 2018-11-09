@@ -190,14 +190,15 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log(options)
-    if (options.id) {
+    if (options.address) {
+      
       this.setData({
-        addressId: options.id
+        address: JSON.parse(options.address)
       });
-      this.getAddressDetail();
+      //this.getAddressDetail();
     }
 
-    this.getRegionList(1);
+    //this.getRegionList(1);
 
   },
   onReady: function () {
@@ -339,8 +340,9 @@ Page({
   saveAddress(){
     console.log(this.data.address)
      let address = this.data.address;
-    address.ContactPhoneCountryId = 1;
-    address.CountryId = 1;
+    address.ContactPhoneCountryId = 37;
+    address.CountryId = 37;
+    address.Available = true;
 
     // if (address.name == '') {
     //   util.showErrorToast('请输入姓名');

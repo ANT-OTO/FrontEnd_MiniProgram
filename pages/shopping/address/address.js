@@ -19,12 +19,18 @@ Page({
   },
   getAddressList (){
     let that = this;
-    util.request(api.AddressList).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          addressList: res.data
-        });
-      }
+            // util.request(api.AddressList).then(function (res) {
+            //   if (res.errno === 0) {
+            //     that.setData({
+            //       addressList: res.data
+            //     });
+            //   }
+            // });
+    util.request(api.Customer).then(function (res) {
+      console.log(res)
+      that.setData({
+        addressList: res.AddressList
+      });
     });
   },
   addressAddOrUpdate (event) {
@@ -43,9 +49,13 @@ Page({
     }
 
     //选择该收货地址
-    wx.redirectTo({
-      url: '/pages/shopping/checkout/checkout'
-    })
+    // wx.redirectTo({
+    //   url: '/pages/shopping/checkout/checkout'
+    // })
+
+    wx.navigateBack({
+      delta: -1
+    });
   },
   onHide: function () {
     // 页面隐藏

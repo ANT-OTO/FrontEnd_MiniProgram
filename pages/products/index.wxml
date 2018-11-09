@@ -52,8 +52,7 @@
   <view class="cate-item">
     <view class="b">
       <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}" url="/pages/goods/goods?id={{iitem.ItemId}}" wx:for="{{goodsList}}" wx:for-item="iitem" wx:for-index="iindex">
-        <image class="img" src="http://www.ant-oto.com/Files/5bb138f7-4ebf-41b5-be59-7fb4b535711f.jpg" background-size="cover"></image>
-        <!-- <image class="img" src="{{iitem.MainImage.FileLink}}" background-size="cover"></image> -->
+        <image class="img" src="{{iitem.MainImage.FileLink}}" background-size="cover"></image>
         <text class="name">{{iitem.ItemTitle}}</text>
         <text class="price">￥{{iitem.Price}}</text>
       </navigator>

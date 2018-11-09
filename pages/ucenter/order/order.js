@@ -12,13 +12,12 @@ Page({
   },
   getOrderList(){
     let that = this;
-    util.request(api.OrderList).then(function (res) {
-      if (res.errno === 0) {
+    util.request(api.CustomerOrderSearch, {PageSize: 20, Page:1},'POST').then(function (res) {
         console.log(res.data);
         that.setData({
-          orderList: res.data.data
+          orderList: res.records
         });
-      }
+      
     });
   },
   payOrder(){
