@@ -68,14 +68,14 @@ Page({
 
   },
   getGoodsRelated: function () {
-    let that = this;
-    util.request(api.GoodsRelated, { id: that.data.id }).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          relatedGoods: res.data.goodsList,
-        });
-      }
-    });
+    // let that = this;
+    // util.request(api.GoodsRelated, { id: that.data.id }).then(function (res) {
+    //   if (res.errno === 0) {
+    //     that.setData({
+    //       relatedGoods: res.data.goodsList,
+    //     });
+    //   }
+    // });
 
   },
   clickSkuValue: function (event) {
@@ -194,13 +194,11 @@ Page({
     });
     var that = this;
     this.getGoodsInfo();
-    util.request(api.CartGoodsCount).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          cartGoodsCount: res.data.cartTotal.goodsCount
-        });
+    util.request(api.CustomerShoppingCartGet, {}, 'POST').then(function (res) {
+      that.setData({
+        cartGoodsCount: res.Goods_Count
+      });
 
-      }
     });
   },
   onReady: function () {
@@ -316,7 +314,7 @@ Page({
             });
             that.setData({
               openAttr: !that.data.openAttr,
-              cartGoodsCount: _tmpNumber
+              cartGoodsCount: res.Goods_Count
             });
           } else {
             wx.showToast({

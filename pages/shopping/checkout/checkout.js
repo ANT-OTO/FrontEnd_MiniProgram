@@ -164,8 +164,11 @@ Page({
 
     util.request(api.CustomerOrderCreateFromShoppingCart, { CustomerAddressId: this.data.addressId}, 'POST').then(res => {
       const orderId = 1;
+      
       wx.redirectTo({
-        url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+        // url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+        url: '/pages/ucenter/orderDetail/orderDetail?id=' + res.Customer_OrderId
+          
       });
       
       

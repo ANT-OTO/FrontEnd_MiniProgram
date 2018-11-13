@@ -3,16 +3,20 @@ var api = require('../../../config/api.js');
 var app = getApp();
 Page({
   data: {
+    idLists: [],
     address: {
-      id:0,
-      province_id: 0,
-      city_id: 0,
-      district_id: 0,
-      address: '',
-      full_region: '',
-      name: '',
-      mobile: '',
-      is_default: 0
+      ContactName: "",
+      ContactLastName: "",
+      ContactPhoneNumber: "",
+      ContactPhoneCountryId: -1,
+      Address1: "",
+      Address2: "",
+      City: "",
+      State: "",
+      Zip: "",
+      CountryId: -1,
+      DefaultShipping: true,
+      IDList: []
     },
     addressId: 0,
     openSelectRegion: false,
@@ -25,6 +29,78 @@ Page({
     regionList: [],
     selectRegionDone: false
   },
+  bindinputContactName(event) {
+    let address = this.data.address;
+    address.ContactName = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputContactLastName(event) {
+    let address = this.data.address;
+    address.ContactLastName = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputContactPhoneNumber(event) {
+    let address = this.data.address;
+    address.ContactPhoneNumber = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputIDNumber(event) {
+    let address = this.data.address;
+    address.IDNumber = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputAddress1(event) {
+    let address = this.data.address;
+    address.Address1 = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputAddress2(event) {
+    let address = this.data.address;
+    address.Address2 = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputCity(event) {
+    let address = this.data.address;
+    address.City = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputState(event) {
+    let address = this.data.address;
+    address.State = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
+  bindinputZip(event) {
+    let address = this.data.address;
+    address.Zip = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
   bindinputMobile(event) {
     let address = this.data.address;
     address.mobile = event.detail.value;
@@ -39,18 +115,28 @@ Page({
       address: address
     });
   },
-  bindinputAddress (event){
+  bindinputAddress(event) {
     let address = this.data.address;
     address.address = event.detail.value;
     this.setData({
       address: address
     });
   },
-  bindIsDefault(){
+  bindIsDefault() {
     let address = this.data.address;
-    address.is_default = !address.is_default;
+    address.DefaultShipping = !address.DefaultShipping;
     this.setData({
       address: address
+    });
+  },
+  getAddressDetail() {
+    let that = this;
+    util.request(api.AddressDetail, { id: that.data.addressId }).then(function (res) {
+      if (res.errno === 0) {
+        that.setData({
+          address: res.data
+        });
+      }
     });
   },
   getAddressDetail() {
@@ -120,14 +206,17 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log(options)
-    if (options.id) {
+    if (options.address != 'undefined') {
+      var tAddress = JSON.parse(options.address);
+      console.log(tAddress.IDList);
       this.setData({
-        addressId: options.id
+        address: tAddress,
+        idLists: tAddress.IDList
       });
-      this.getAddressDetail();
+      //this.getAddressDetail();
     }
 
-    this.getRegionList(1);
+    //this.getRegionList(1);
 
   },
   onReady: function () {
@@ -266,47 +355,58 @@ Page({
   saveAddress(){
     console.log(this.data.address)
     let address = this.data.address;
+    address.ContactPhoneCountryId = 37;
+    address.CountryId = 37;
+    address.Available = true;
+    address.IDList = this.data.idLists;
 
-    if (address.name == '') {
-      util.showErrorToast('请输入姓名');
+    // if (address.name == '') {
+    //   util.showErrorToast('请输入姓名');
 
-      return false;
-    }
+    //   return false;
+    // }
 
-    if (address.mobile == '') {
-      util.showErrorToast('请输入手机号码');
-      return false;
-    }
-
-
-    if (address.district_id == 0) {
-      util.showErrorToast('请输入省市区');
-      return false;
-    }
-
-    if (address.address == '') {
-      util.showErrorToast('请输入详细地址');
-      return false;
-    }
+    // if (address.mobile == '') {
+    //   util.showErrorToast('请输入手机号码');
+    //   return false;
+    // }
 
 
-    let that = this;
-    util.request(api.AddressSave, { 
-      id: address.id,
-      name: address.name,
-      mobile: address.mobile,
-      province_id: address.province_id,
-      city_id: address.city_id,
-      district_id: address.district_id,
-      address: address.address,
-      is_default: address.is_default,
-    }, 'POST').then(function (res) {
-      if (res.errno === 0) {
-        wx.reLaunch({
-          url: '/pages/shopping/address/address',
-        })
-      }
+    // if (address.district_id == 0) {
+    //   util.showErrorToast('请输入省市区');
+    //   return false;
+    // }
+
+    // if (address.address == '') {
+    //   util.showErrorToast('请输入详细地址');
+    //   return false;
+    // }
+
+    util.request(api.CustomerAddressCreateUpdate, address, 'POST').then(function (res) {
+      wx.reLaunch({
+        url: '/pages/shopping/address/address',
+      })
+
     });
+
+
+    // let that = this;
+    // util.request(api.AddressSave, { 
+    //   id: address.id,
+    //   name: address.name,
+    //   mobile: address.mobile,
+    //   province_id: address.province_id,
+    //   city_id: address.city_id,
+    //   district_id: address.district_id,
+    //   address: address.address,
+    //   is_default: address.is_default,
+    // }, 'POST').then(function (res) {
+    //   if (res.errno === 0) {
+    //     wx.reLaunch({
+    //       url: '/pages/shopping/address/address',
+    //     })
+    //   }
+    // });
 
   },
   onShow: function () {
@@ -320,5 +420,95 @@ Page({
   onUnload: function () {
     // 页面关闭
 
+  },
+  chooseimage: function () {
+    var that = this;
+    wx.showActionSheet({
+      itemList: ['从相册中选择', '拍照'],
+      itemColor: "#CED63A",
+      success: function (res) {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            that.chooseWxImage('album')
+          } else if (res.tapIndex == 1) {
+            that.chooseWxImage('camera')
+          }
+        }
+      }
+
+    })
+  },
+  chooseWxImage: function (type) {
+    var that = this;
+    let idLists = this.data.idLists;
+    wx.chooseImage({
+      sizeType: ['original', 'compressed'],
+      sourceType: [type],
+      success: function (res) {
+        var tempFilePaths = res.tempFilePaths;
+        console.log(res);
+        wx.showToast({
+          title: '正在上传...',
+          icon: 'loading',
+          mask: true,
+          duration: 10000
+        })
+        var uploadImgCount = 0;
+        for (var i = 0, h = tempFilePaths.length; i < h; i++) {
+          var tArray = tempFilePaths[i].split('.');
+          var ext = tArray[tArray.length - 1];
+
+          wx.uploadFile({
+            url: api.FileUpload + ext,
+            filePath: tempFilePaths[i],
+            name: 'uploadfile_ant',
+            // formData: {
+            //   'imgIndex': i
+            // },
+            header: {
+              "Content-Type": "multipart/form-data",
+              'ANTToken': wx.getStorageSync('token')
+            },
+            success: function (res) {
+              console.log(res.data);
+              uploadImgCount++;
+              if (res.data) {
+                var address = JSON.parse(res.data)
+                idLists.push(address);
+                that.setData({
+                  idLists
+                })
+
+              }
+
+              //如果是最后一张,则隐藏等待中
+              if (uploadImgCount == tempFilePaths.length) {
+                wx.hideToast();
+              }
+            },
+            fail: function (res) {
+              wx.hideToast();
+              wx.showModal({
+                title: '错误提示',
+                content: '上传图片失败',
+                showCancel: false,
+                success: function (res) { }
+              })
+            }
+          });
+        }
+      }
+    });
+
+
+
+  },
+  deleteImageTap: function (event) {
+    let index = event.target.dataset.addressIndex;
+    let idLists = this.data.idLists;
+    idLists.splice(index, 1);
+    this.setData({
+      idLists: idLists
+    })
   }
 })

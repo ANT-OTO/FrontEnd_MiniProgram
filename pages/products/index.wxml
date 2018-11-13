@@ -5,7 +5,7 @@
       <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" />
       <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"></image>
     </view>
-    <view class="right" bindtap="closeSearch">取消</view>
+    <!-- <view class="right" bindtap="closeSearch">取消</view> -->
     <view class="right" bindtap="searchClick">搜索</view>
 
   </view>
@@ -52,7 +52,8 @@
   <view class="cate-item">
     <view class="b">
       <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}" url="/pages/goods/goods?id={{iitem.ItemId}}" wx:for="{{goodsList}}" wx:for-item="iitem" wx:for-index="iindex">
-        <image class="img" src="{{iitem.MainImage.FileLink}}" background-size="cover"></image>
+        <image wx:if="{{iitem.MainImage&&iitem.MainImage.FileLink}}" class="img" src="{{iitem.MainImage.FileLink}}" background-size="cover"></image>
+        <image wx:if="{{!iitem.MainImage || !iitem.MainImage.FileLink}}" class="img" src="/static/images/no_image.png" background-size="cover"></image>
         <text class="name">{{iitem.ItemTitle}}</text>
         <text class="price">￥{{iitem.Price}}</text>
       </navigator>

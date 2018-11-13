@@ -35,9 +35,16 @@ Page({
   },
   addressAddOrUpdate (event) {
     console.log(event)
+    var address = JSON.stringify(this.data.addressList[event.currentTarget.dataset.addressIndex])
+
+
     wx.navigateTo({
-      url: '/pages/shopping/addressAdd/addressAdd?id=' + event.currentTarget.dataset.addressId
+      url: '/pages/shopping/addressAdd/addressAdd?address=' + address
     })
+
+    // wx.navigateTo({
+    //   url: '/pages/shopping/addressAdd/addressAdd?id=' + event.currentTarget.dataset.addressId
+    // })
   },
   selectAddress(event){
     console.log(event.currentTarget.dataset.addressId);

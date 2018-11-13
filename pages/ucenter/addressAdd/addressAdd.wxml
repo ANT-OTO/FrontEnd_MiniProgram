@@ -7,6 +7,9 @@
             <input class="input" bindinput="bindinputContactLastName" placeholder="姓" value="{{address.ContactLastName}}"/>
         </view>
         <view class="form-item">
+            <input class="input" bindinput="bindinputIDNumber" placeholder="身份证" value="{{address.IDNumber}}"/>
+        </view>
+        <view class="form-item">
             <input class="input" bindinput="bindinputContactPhoneNumber" placeholder="手机号码" value="{{address.ContactPhoneNumber}}"/>
         </view>
         <view class="form-item">
@@ -36,8 +39,9 @@
         <view class="form-defautl">
             <button style="margin:30rpx" bindtap="chooseimage">+添加身份证照片</button>
         </view>
-        <view wx:for="{{idLists}}" wx:for-item="item">
-          <image src="{{item.MFileLink }}" catchTap="chooseImageTap" mode="aspectFit" style="width: 100%; height: 450rpx" />
+        <view wx:for="{{idLists}}" wx:for-item="item" wx:index="index">
+          <image data-address-index="{{index}}" src="{{item.MFileLink }}" bindtap="deleteImageTap" mode="aspectFit" style="width: 100%; height: 450rpx" />
+           <button class='img-delet-btn' bindtap="deleteImageTap">删除</button>
 
         </view>
        

@@ -1,8 +1,13 @@
 <view class="container">
   <swiper class="goodsimgs" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
-    <swiper-item wx:for="{{gallery}}" wx:key="{{item.FileId}}">
+    <swiper-item wx:if="{{gallery&&gallery.length >0 }}" wx:for="{{gallery}}" wx:key="{{item.FileId}}">
       <image src="{{item.FileLink}}" background-size="cover"></image>
     </swiper-item>
+    <swiper-item wx:if="{{gallery.length <=0 }}">
+      <image src="/static/images/no_image.png" background-size="cover"></image>
+    </swiper-item>
+
+
   </swiper>
   <!-- <view class="service-policy">
     <view class="item">30天无忧退货</view>
@@ -152,6 +157,6 @@
       <image bindtap="openCartPage" class="icon" src="/static/images/ic_menu_shoping_nor.png"></image>
     </view>
   </view>
-  <view class="c">立即购买</view>
+  <!-- <view class="c">立即购买</view> -->
   <view class="r" bindtap="addToCart">加入购物车</view>
 </view>

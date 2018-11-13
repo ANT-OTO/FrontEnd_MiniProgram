@@ -178,3 +178,13 @@ page{
   left:0;
   z-index: 8;
 }
+
+.img-delet-btn {
+top:-241px;
+width:30px;
+font-size:11px;
+padding:0px;
+right:-153px;
+background-color: #b4282d
+
+}

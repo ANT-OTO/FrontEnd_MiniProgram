@@ -50,12 +50,12 @@ Page({
       if (res.ItemList){
         that.setData({
           cartGoods: res.ItemList,
-          cartTotal: res.cartTotal
+          //cartTotal: res.cartTotal
         });
       }else{
         that.setData({
           cartGoods: [],
-          cartTotal: res.cartTotal
+          //cartTotal: res.cartTotal
         });
       }
       var tempCartTotal =
@@ -67,7 +67,7 @@ Page({
       };
       
       that.setData({
-        checkedAllStatus: that.isCheckedAll(),
+        //checkedAllStatus: that.isCheckedAll(),
         cartTotal: tempCartTotal
       });
     });

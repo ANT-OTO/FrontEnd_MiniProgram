@@ -7,6 +7,17 @@ page{
     width: 100%;
     height: auto;
     overflow: hidden;
+    padding-bottom: 100rpx;
+
+}
+.img-delet-btn {
+top:-241px;
+width:30px;
+font-size:11px;
+padding:0px;
+right:-153px;
+background-color: #b4282d
+
 }
 
 .add-address .form-item{

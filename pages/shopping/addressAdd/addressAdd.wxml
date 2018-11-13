@@ -1,21 +1,51 @@
 <view class="add-address">
-    <view class="add-form">
+     <scroll-view class="add-form">
         <view class="form-item">
-            <input class="input" bindinput="bindinputName" placeholder="姓名" value="{{address.name}}" auto-focus/>
+            <input class="input" bindinput="bindinputContactName" placeholder="名" value="{{address.ContactName}}" auto-focus/>
         </view>
         <view class="form-item">
-            <input class="input" bindinput="bindinputMobile" value="{{address.mobile}}" placeholder="手机号码"/>
+            <input class="input" bindinput="bindinputContactLastName" placeholder="姓" value="{{address.ContactLastName}}"/>
         </view>
         <view class="form-item">
+            <input class="input" bindinput="bindinputIDNumber" placeholder="身份证" value="{{address.IDNumber}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputContactPhoneNumber" placeholder="手机号码" value="{{address.ContactPhoneNumber}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputAddress1" placeholder="地址1" value="{{address.Address1}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputAddress2" placeholder="地址2" value="{{address.Address2}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputCity" placeholder="城市" value="{{address.City}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputState" placeholder="省份" value="{{address.State}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputZip" placeholder="Zip" value="{{address.Zip}}"/>
+        </view>
+        
+        <!-- <view class="form-item">
             <input class="input" value="{{address.full_region}}" disabled="true" bindtap="chooseRegion" placeholder="省份、城市、区县"/>
-        </view>
-        <view class="form-item">
-            <input class="input" bindinput="bindinputAddress" value="{{address.address}}" placeholder="详细地址, 如街道、楼盘号等"/>
-        </view>
+        </view> -->
+        
+        
         <view class="form-default">
-            <text bindtap="bindIsDefault" class="default-input {{address.is_default == 1 ? 'selected' : ''}}">设为默认地址</text>
+            <text bindtap="bindIsDefault" class="default-input {{address.DefaultShipping == 1 ? 'selected' : ''}}">设为默认地址</text>
         </view>
-    </view>
+        <view class="form-defautl">
+            <button style="margin:30rpx" bindtap="chooseimage">+添加身份证照片</button>
+        </view>
+        <view wx:for="{{idLists}}" wx:for-item="item" wx:index="index">
+          <image data-address-index="{{index}}" src="{{item.MFileLink }}" bindtap="deleteImageTap" mode="aspectFit" style="width: 100%; height: 450rpx" />
+           <button class='img-delet-btn' bindtap="deleteImageTap">删除</button>
+
+        </view>
+       
+    </scroll-view>
 
     <view class="btns">
         <button class="cannel" bindtap="cancelAddress">取消</button>

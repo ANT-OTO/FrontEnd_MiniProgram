@@ -87,3 +87,12 @@
     font-size: 28rpx;
     color: #999;
 }
+.text {
+  text-align: center;
+  width:100%;
+}
+.icon {
+  text-align: center;
+  width:100%;
+  background-image: url('../../../staic/images/Logo_i.png') no-repeat;
+}

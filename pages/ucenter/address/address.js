@@ -47,10 +47,9 @@ Page({
       success: function (res) {
         if (res.confirm) {
           let addressId = event.target.dataset.addressId;
-          util.request(api.AddressDelete, { id: addressId }, 'POST').then(function (res) {
-            if (res.errno === 0) {
-              that.getAddressList();
-            }
+          util.request(api.CustomerAddressCreateUpdate, { CustomerAddressId: addressId,Available:0}, 'POST').then(function (res) {
+            that.getAddressList();
+            
           });
           console.log('用户点击确定')
         }

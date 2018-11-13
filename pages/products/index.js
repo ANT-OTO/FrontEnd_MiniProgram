@@ -41,16 +41,16 @@ Page({
   },
 
   getSearchKeyword() {
-    let that = this;
-    util.request(api.SearchIndex).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          historyKeyword: res.data.historyKeywordList,
-          defaultKeyword: res.data.defaultKeyword,
-          hotKeyword: res.data.hotKeywordList
-        });
-      }
-    });
+    // let that = this;
+    // util.request(api.SearchIndex).then(function (res) {
+    //   if (res.errno === 0) {
+    //     that.setData({
+    //       historyKeyword: res.data.historyKeywordList,
+    //       defaultKeyword: res.data.defaultKeyword,
+    //       hotKeyword: res.data.hotKeywordList
+    //     });
+    //   }
+    // });
   },
 
   inputChange: function (e) {
@@ -163,7 +163,7 @@ Page({
   },
   getSearchResult(keyword) {
     this.setData({
-      keyword: keyword,
+      //keyword: keyword,
       page: 1,
       categoryId: 0,
       goodsList: []

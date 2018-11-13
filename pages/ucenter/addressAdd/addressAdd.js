@@ -54,6 +54,14 @@ Page({
     });
   },
 
+  bindinputIDNumber(event) {
+    let address = this.data.address;
+    address.IDNumber = event.detail.value;
+    this.setData({
+      address: address
+    });
+  },
+
   bindinputAddress1(event) {
     let address = this.data.address;
     address.Address1 = event.detail.value;
@@ -93,7 +101,6 @@ Page({
       address: address
     });
   },
-
 
   bindinputMobile(event) {
     let address = this.data.address;
@@ -190,13 +197,16 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log(options)
-    if (options.address) {
-      
+    if (options.address != 'undefined') {
+      var tAddress = JSON.parse(options.address);
+      console.log(tAddress.IDList);
       this.setData({
-        address: JSON.parse(options.address)
+        address: tAddress,
+        idLists: tAddress.IDList
       });
       //this.getAddressDetail();
     }
+
 
     //this.getRegionList(1);
 
@@ -333,9 +343,9 @@ Page({
     });
   },
   cancelAddress(){
-    wx.navigateTo({
-      url: '/pages/ucenter/address/address',
-    })
+    wx.navigateBack({
+      delta: -1
+    });
   },
   saveAddress(){
     console.log(this.data.address)
@@ -343,6 +353,7 @@ Page({
     address.ContactPhoneCountryId = 37;
     address.CountryId = 37;
     address.Available = true;
+    address.IDList = this.data.idLists;
 
     // if (address.name == '') {
     //   util.showErrorToast('请输入姓名');
@@ -365,15 +376,12 @@ Page({
     //   util.showErrorToast('请输入详细地址');
     //   return false;
     // }
-
-
-    let that = this;
+    console.log(address);
     util.request(api.CustomerAddressCreateUpdate, address, 'POST').then(function (res) {
-      if (res.errno === 0) {
-        wx.navigateTo({
-          url: '/pages/ucenter/address/address',
-        })
-      }
+      wx.navigateBack({
+        delta: -1
+      });
+      
     });
 
   },
@@ -423,8 +431,11 @@ Page({
         })
         var uploadImgCount = 0;
         for (var i = 0, h = tempFilePaths.length; i < h; i++) {
+          var tArray = tempFilePaths[i].split('.');
+          var ext = tArray[tArray.length-1];
+          
           wx.uploadFile({
-            url: api.FileUpload+"img",
+            url: api.FileUpload +ext,
             filePath: tempFilePaths[i],
             name: 'uploadfile_ant',
             // formData: {
@@ -435,10 +446,11 @@ Page({
               'ANTToken': wx.getStorageSync('token')
             },
             success: function (res) {
-              console.log(res);
+              console.log(res.data);
               uploadImgCount++;
               if(res.data){
-                idLists.push(res.data);
+                var address = JSON.parse(res.data)
+                idLists.push(address);
                 that.setData({
                   idLists
                 })
@@ -466,5 +478,13 @@ Page({
 
 
     
+  },
+  deleteImageTap:function(event){
+    let index = event.target.dataset.addressIndex;
+    let idLists = this.data.idLists;
+    idLists.splice(index, 1);
+    this.setData({
+      idLists: idLists
+    })
   }
 })
